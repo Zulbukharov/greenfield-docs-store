@@ -8,7 +8,6 @@ from schemas.pydantic.similarity import SimilaritySearchResponse
 
 class SimilarityService:
     docSearchRepository: DocumentStoreRepository
-    commandSearchRepository: CommandStoreRepository
 
     def __init__(self, docSearchRepository: DocumentStoreRepository = Depends(), commandSearchRepository: CommandStoreRepository = Depends()) -> None:
         self.docSearchRepository = docSearchRepository
@@ -18,4 +17,4 @@ class SimilarityService:
         return [SimilaritySearchResponse(content=record.page_content, meta=record.metadata['source'] if 'metadata' in record else "") for record in  self.docSearchRepository.similarity_search(query, limit=limit)]
     
     def search_commands(self, query, limit=4) -> List[SimilaritySearchResponse]:
-        return [SimilaritySearchResponse(content=record.page_content, meta=record.metadata['source'] if 'metadata' in record else "") for record in  self.commandSearchRepository.similarity_search(query, limit=limit)]
+        return [SimilaritySearchResponse(content=record.page_content, meta=record.metadata['source'] if 'metadata' in record else "") for record in  self.docSearchRepository.similarity_search(query, limit=limit)]
