@@ -13,4 +13,4 @@ class SimilarityService:
         self.similarityRepository = similarityRepository
 
     def search(self, query, limit=4) -> List[SimilaritySearchResponse]:
-        return [SimilaritySearchResponse(content=record.page_content, meta=record.metadata['source']) for record in  self.similarityRepository.similarity_search(query, limit=limit)]
+        return [SimilaritySearchResponse(content=record.page_content, meta=record.metadata['source'] if 'metadata' in record else "") for record in  self.similarityRepository.similarity_search(query, limit=limit)]
